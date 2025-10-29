@@ -1,0 +1,63 @@
+spring:
+  application:
+    name: remote-hsm-hsmserver
+server:
+  servlet:
+    context-path: /rhsm-hsm
+  port: 8091
+credential:
+  bundles:
+    jks:
+      rhsm-server:
+        name: "Remote HSM server"
+        store-reference: rhsm-server
+        key:
+          alias: server
+          key-password: Test1234
+        key-id: rhsm-server
+        metadata:
+          jws-algorithm: ES256
+          keyuse: sign
+      rhsm-hsm:
+        name: "Remote HSM - HSM key"
+        store-reference: rhsm-hsm
+        key:
+          alias: server-hsm
+          key-password: Test1234
+        key-id: rhsm-hsm
+        metadata:
+          jws-algorithm: ES256
+          keyuse: sign
+    keystore:
+      rhsm-server:
+        location: classpath:dev/server-key.p12
+        password: Test1234
+        type: PKCS12
+      rhsm-hsm:
+        location: classpath:dev/server-hsm-key.p12
+        password: Test1234
+        type: PKCS12
+    monitoring:
+      health-endpoint-enabled: false
+rps-ops:
+  server-identity: https://cloud-wallet.digg.se/rhsm
+  oprf-seed: 9aba66b536549dc6630f719bbcbaa16cbf70253d273640d7690f6e2e4ef69875
+  server-opaque-key: rhsm-server
+  server-hsm-key: rhsm-hsm
+  client-record-registry-file: target/test-data/client-record-registry.json
+  session-duration: PT15M
+  replay-check-duration: PT15M
+  finalize-duration: PT10S
+  client-registry-init-directory: target/test-classes/dev
+  wallet-keys:
+    #    pkcs11ConfigFile:
+    keystore-password: Test1234
+#    key-wrap-alias:
+    keystore-file-location: target/test-data/wallet-keys.jks
+  config-location: target/test-data
+
+logging:
+  level:
+    se:
+      digg:
+        wallet: DEBUG

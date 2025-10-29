@@ -1,0 +1,50 @@
+name: rhsm-demo
+
+services:
+
+  rhsm-client:
+    image: rhsm-client
+    container_name: rhsm-client
+    ports:
+      - "9000:8443"
+      - "9002:8000"
+    restart: on-failure
+    volumes:
+      - ./remote-hsm-client/src/main/resources:/resources
+      - ./demo:/demo
+    environment:
+      SPRING_CONFIG_ADDITIONAL_LOCATION: /config/
+      SPRING_PROFILES_ACTIVE: demo
+      TZ: "Europe/Stockholm"
+      JAVA_TOOL_OPTIONS: "-Djava.net.preferIPv4Stack=true -XX:UseSVE=0"
+
+  rhsm-bff:
+    image: rhsm-bff
+    container_name: rhsm-bff
+    ports:
+      - "9010:8443"
+      - "9012:8000"
+    restart: on-failure
+    volumes:
+      - ./remote-hsm-bff/target/test-data:/target/test-data
+      - ./demo:/demo
+    environment:
+      SPRING_CONFIG_ADDITIONAL_LOCATION: /config/
+      SPRING_PROFILES_ACTIVE: demo
+      TZ: "Europe/Stockholm"
+      JAVA_TOOL_OPTIONS: "-Djava.net.preferIPv4Stack=true -XX:UseSVE=0"
+  rhsm-hsm:
+    image: rhsm-hsm
+    container_name: rhsm-hsm
+    ports:
+      - "9020:8443"
+      - "9022:8000"
+    restart: on-failure
+    volumes:
+      - ./remote-hsm-hsmserver/target/test-data:/target/test-data
+      - ./demo:/demo
+    environment:
+      SPRING_CONFIG_ADDITIONAL_LOCATION: /config/
+      SPRING_PROFILES_ACTIVE: hsm,demo
+      TZ: "Europe/Stockholm"
+      JAVA_TOOL_OPTIONS: "-Djava.net.preferIPv4Stack=true -XX:UseSVE=0"

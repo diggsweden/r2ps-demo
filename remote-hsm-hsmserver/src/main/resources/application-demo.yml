@@ -1,0 +1,9 @@
+server:
+  ssl:
+    enabled: true
+    key-store: /demo/tls.jks
+    key-store-type: JKS
+    key-store-password: 'secret'
+    key-password: 'secret'
+    key-alias: 'tls'
+  port: 8443

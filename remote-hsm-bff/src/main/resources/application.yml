@@ -1,0 +1,45 @@
+spring:
+  application:
+    name: remote-hsm-bff
+
+server:
+  servlet:
+    context-path: /rhsm-bff
+  port: 8090
+credential:
+  bundles:
+    jks:
+      bff-gen:
+        name: "BFF server - General context"
+        store-reference: bff-gen-store
+        key:
+          alias: gen-context
+          key-password: Test1234
+        key-id: bff-gen-key
+        metadata:
+          jws-algorithm: ES256
+          keyuse: sign
+    keystore:
+      bff-gen-store:
+        location: classpath:dev/bff-gen.p12
+        password: Test1234
+        type: PKCS12
+    monitoring:
+      health-endpoint-enabled: false
+rps-ops:
+  server-identity: https://cloud-wallet.digg.se/bff
+  oprf-seed: a27366b536549dc6630f719bbcbaa16cbf70253d273640d7690f6e2e4ef6a5c7
+  server-opaque-key: bff-gen
+  client-record-registry-file: target/test-data/client-record-registry.json
+  session-duration: PT15M
+  replay-check-duration: PT15M
+  finalize-duration: PT10S
+  client-registry-init-directory: target/test-classes/dev
+  context-url:
+    hsm: http://localhost:8091/rhsm-hsm/service
+
+logging:
+  level:
+    se:
+      digg:
+        wallet: DEBUG

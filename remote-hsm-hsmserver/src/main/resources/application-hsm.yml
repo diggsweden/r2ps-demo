@@ -1,0 +1,14 @@
+rps-ops:
+  wallet-keys:
+    key-wrap-alias: kek-1
+    keystore-password: 123456
+    pkcs11-config:
+      - curve: P-256
+        location: /opt/softhsm2-p256.conf
+      - curve: P-384
+        location: /opt/softhsm2-p384.conf
+      - curve: P-521
+        location: /opt/softhsm2-p521.conf
+    hsm-key-retension-duration: 10S
+server:
+  port: 8080

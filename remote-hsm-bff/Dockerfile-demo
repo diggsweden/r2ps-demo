@@ -1,0 +1,14 @@
+FROM openjdk:21-jdk-slim
+ARG PROFILE=deploy
+
+EXPOSE 8080
+EXPOSE 8009
+EXPOSE 8008
+
+COPY target/remote-hsm-bff-*.jar /app.jar
+
+# Copy demo data
+COPY target/test-classes /target/test-classes
+COPY src/main/resources/application-demo.yml /config/application-demo.yml
+
+ENTRYPOINT ["java", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000","-jar","/app.jar"]
