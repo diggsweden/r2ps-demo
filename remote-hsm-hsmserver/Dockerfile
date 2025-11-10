@@ -1,4 +1,4 @@
-FROM openjdk:21-jdk-buster
+FROM eclipse-temurin:21-jdk-jammy
 
 EXPOSE 8080
 EXPOSE 8009
